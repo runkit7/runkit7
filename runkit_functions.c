@@ -881,10 +881,10 @@ int php_runkit_generate_lambda_function(const zend_string *arguments, const zend
 	snprintf(eval_code, eval_code_length, "function %s" RUNKIT_TEMP_FUNCNAME "(%s)%s{%s}", (return_ref ? "&" : ""), ZSTR_VAL(arguments), return_type_code, ZSTR_VAL(phpcode));
 	eval_name = zend_make_compiled_string_description("runkit runtime-created function" TSRMLS_CC);
 	if (zend_eval_string(eval_code, NULL, eval_name TSRMLS_CC) == FAILURE) {
+		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Cannot create temporary function '%s'", eval_code);
 		efree(eval_code);
 		efree(eval_name);
 		efree(return_type_code);
-		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Cannot create temporary function '%s'", eval_code);
 		zend_hash_str_del(EG(function_table), RUNKIT_TEMP_FUNCNAME, sizeof(RUNKIT_TEMP_FUNCNAME) - 1);
 		return FAILURE;
 	}
