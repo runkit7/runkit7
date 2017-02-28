@@ -60,7 +60,7 @@ static inline void* _debug_emalloc(void* data, int bytes, char* file, int line) 
 #define debug_printf(...) do { } while(0)
 #endif
 
-#define PHP_RUNKIT_VERSION					"1.0.5a1"
+#define PHP_RUNKIT_VERSION					"1.0.5a2"
 
 #define PHP_RUNKIT_IMPORT_FUNCTIONS                         0x0001
 #define PHP_RUNKIT_IMPORT_CLASS_METHODS                     0x0002

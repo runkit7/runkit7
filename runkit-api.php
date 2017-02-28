@@ -11,7 +11,7 @@ const RUNKIT_ACC_PROTECTED        = 0x200;
 const RUNKIT_ACC_PRIVATE          = 0x400;
 const RUNKIT_ACC_STATIC           = 0x1;
 
-const RUNKIT_VERSION              = "1.0.5-dev";
+const RUNKIT_VERSION              = "1.0.5a2";
 
 
 /**

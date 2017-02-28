@@ -7,7 +7,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <name>runkit</name>
  <channel>pecl.php.net</channel>
  <summary>Runkit7 : For all those things you.... probably shouldn&apos;t have been doing anyway.... but surely do!</summary>
- <description>Replace, rename, and remove user defined functions, methods, properties, and constants (Unstable).
+ <description>Replace, rename, and remove user defined functions, methods, and constants.
 Define customized superglobal variables for general purpose use.
  </description>
  <lead>
@@ -16,35 +16,22 @@ Define customized superglobal variables for general purpose use.
   <email></email>
   <active>yes</active>
  </lead>
-   <date>2017-01-28</date>
-   <version>
-    <release>1.0.5a1</release>
-    <api>1.0.5a1</api>
-   </version>
-   <stability>
-    <release>alpha</release>
-    <api>alpha</api>
-   </stability>
-   <license uri="http://www.opensource.org/licenses/BSD-3-Clause">BSD License (3 Clause)</license>
-   <notes>
-     Supported features:
-         + Supports PHP 7.0 and PHP 7.1, tested on 64-bit and 32-bit builds (ZTS and non-ZTS)
-		 - Removed support for PHP &lt;= 5.x
-	     + Superglobals work reliably in php7.0 and 7.1
-         + runkit_method_* and runkit_function_* have been ported. Manipulating built in functions (e.g. `var_dump` with `runkit.internal_override`) may cause segfaults or memory leaks.
-		 + Constant manipulation works, if the constant is declared in a different file from the file doing the accessing. Constants declared within the same file may be inlined by the PHP Zend VM.
-		 + See runkit-api.php for the supported APIs.
-		 + Allows using static::/self::/$this in runkit_method_add/redefine.
-
-     New features
-	     + Allow specifying the return type for runkit function and method manipulation. Supports optional return types in 7.1 (e.g. '?string')
-
-     Disabled features
-         + runkit_default_property_* was disabled because of changes to the PHP Zend VM. Future releases may introduce `runkit_default_property_redefine`.
-		 + runkit sandbox and `runkit_lint*` were removed.
-		 + `runkit_class_emancipate` and `runkit_class_adopt` are disabled, because they depend on default property manipulation.
-    </notes>
-
+ <date>2017-02-27</date>
+ <version>
+  <release>1.0.5a2</release>
+  <api>1.0.5a2</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/BSD-3-Clause">BSD License (3 Clause)</license>
+ <notes>
+   Fixes
+     + Fixes invalid error message when printing an error message, in the case when syntactically invalid code strings for runkit_function_add, etc.
+     + Fixes a crash on shutdown when overriding internal methods
+     + Update documentation
+  </notes>
  <contents>
   <dir name="/">
    <dir name="tests">
@@ -272,6 +259,54 @@ Define customized superglobal variables for general purpose use.
  <providesextension>runkit</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <date>2017-02-27</date>
+   <version>
+    <release>1.0.5a2</release>
+    <api>1.0.5a2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/BSD-3-Clause">BSD License (3 Clause)</license>
+   <notes>
+   Fixes
+     + Fixes invalid error message when printing an error message, in the case when syntactically invalid code strings for runkit_function_add, etc.
+     + Fixes a crash on shutdown when overriding internal methods
+     + Update documentation
+   </notes>
+  </release>
+  <release>
+   <date>2017-01-28</date>
+   <version>
+    <release>1.0.5a1</release>
+    <api>1.0.5a1</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/BSD-3-Clause">BSD License (3 Clause)</license>
+   <notes>
+     Supported features:
+         + Supports PHP 7.0 and PHP 7.1, tested on 64-bit and 32-bit builds (ZTS and non-ZTS)
+         - Removed support for PHP &lt;= 5.x
+         + Superglobals work reliably in php7.0 and 7.1
+         + runkit_method_* and runkit_function_* have been ported. Manipulating built in functions (e.g. `var_dump` with `runkit.internal_override`) may cause segfaults or memory leaks.
+         + Constant manipulation works, if the constant is declared in a different file from the file doing the accessing. Constants declared within the same file may be inlined by the PHP Zend VM.
+         + See runkit-api.php for the supported APIs.
+         + Allows using static::/self::/$this in runkit_method_add/redefine.
+
+     New features
+         + Allow specifying the return type for runkit function and method manipulation. Supports optional return types in 7.1 (e.g. '?string')
+
+     Disabled features
+         + runkit_default_property_* was disabled because of changes to the PHP Zend VM. Future releases may introduce `runkit_default_property_redefine`.
+         + runkit sandbox and `runkit_lint*` were removed.
+         + `runkit_class_emancipate` and `runkit_class_adopt` are disabled, because they depend on default property manipulation.
+   </notes>
+  </release>
   <release>
    <date>2015-09-25</date>
    <version>
