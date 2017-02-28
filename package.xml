@@ -16,7 +16,7 @@ Define customized superglobal variables for general purpose use.
   <email></email>
   <active>yes</active>
  </lead>
- <date>2017-02-27</date>
+ <date>2017-02-28</date>
  <version>
   <release>1.0.5a2</release>
   <api>1.0.5a2</api>
@@ -70,6 +70,7 @@ Define customized superglobal variables for general purpose use.
     <file name="runkit_constant_add_to_class.phpt" role="test" />
     <file name="runkit_constant_redefine_in_class.phpt" role="test" />
     <file name="runkit_constant_redefine.phpt" role="test" />
+    <file name="runkit_constant_redefine_protected_across_file.inc" role="test" />
     <file name="runkit_constant_redefine_protected_across_file.phpt" role="test" />
     <file name="runkit_constant_remove_from_class.phpt" role="test" />
     <file name="runkit_constant_remove_from_class_without_inlining.phpt" role="test" />
@@ -238,6 +239,7 @@ Define customized superglobal variables for general purpose use.
    <file name="runkit.c" role="src" />
    <file name="runkit.dsp" role="src" />
    <!-- <file name="runkit_classes.c" role="src" /> -->
+   <file name="runkit_common.c" role="src" />
    <file name="runkit_constants.c" role="src" />
    <file name="runkit_functions.c" role="src" />
    <!-- <file name="runkit_import.c" role="src" /> -->
@@ -260,7 +262,7 @@ Define customized superglobal variables for general purpose use.
  <extsrcrelease />
  <changelog>
   <release>
-   <date>2017-02-27</date>
+   <date>2017-02-28</date>
    <version>
     <release>1.0.5a2</release>
     <api>1.0.5a2</api>
