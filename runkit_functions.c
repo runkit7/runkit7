@@ -163,6 +163,7 @@ static inline void php_runkit_add_to_misplaced_internal_functions(zend_function 
 		php_runkit_ensure_misplaced_internal_functions_table_exists();
 		// Add misplaced internal functions to a list of strings, to be wiped out on request shutdown (before restoring originals)
 		ZVAL_STR(&tmp, name_lower);
+		zend_string_addref(name_lower);  // TODO: Free this in calls to php_runkit_destroy_misplaced_internal_function on shutdown?
 		zend_hash_next_index_insert(RUNKIT_G(misplaced_internal_functions), &tmp);
 	}
 }
