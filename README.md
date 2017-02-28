@@ -16,8 +16,8 @@ Current Build Status
 
 In 7.0.x and 7.1.x: Roughly 4 failing tests, 93 skipped tests, 91 passing tests.
 
-Compatability: PHP7.0 and PHP7.1(Partial, buggy)
-------------------------------------------------
+Compatability: PHP7.0 and PHP7.1(Partial)
+-----------------------------------------
 
 See [runkit-api.php](./runkit-api.php) for the implemented functionality and method signatures.
 
@@ -31,7 +31,7 @@ Class and function manipulation is recommended only for unit tests.
 - Adding default properties to classes doesn't work in php7, because of a change
   in the way PHP stores objects.
   Eventually, I plan to add `runkit_default_property_modify`, which will replace one default value with a different default property, keeping the number of properties the same.
-  See the section [Reasons for disabling property manipulation](#reasons-for-disabling-property-manipulation)
+  See the reasons for disabling property manipulation at [PROPERTY\_MANIPULATION.md](./PROPERTY_MANIPULATION.md)
   As a substitute, user code can do the following things:
 
   - rename (or add) `__construct` with `runkit_method_rename`/`runkit_method_add`,
@@ -204,6 +204,12 @@ make
 make test
 sudo make install
 ```
+
+Pecl tars are also included with newer GitHub releases.
+
+1. Go to https://github.com/runkit7/runkit7/releases
+2. Download the tgz file from the link (e.g. runkit-1.0.5a2.tgz)
+3. `pecl install ./runkit-1.0.5a2.tgz`
 
 ### BUILDING AND INSTALLING RUNKIT7 IN WINDOWS
 
