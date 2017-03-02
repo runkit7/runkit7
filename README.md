@@ -14,10 +14,10 @@ __Now with partial support for PHP7.0 and PHP7.1!__ (function/method manipulatio
 Current Build Status
 --------------------
 
-In 7.0.x and 7.1.x: Roughly 4 failing tests, 93 skipped tests, 91 passing tests.
+In 7.0.x and 7.1.x: 0 failing tests, 4 expected failures (constant manipulation in same file), 61 skipped tests(for disabled property and import), and 95 passing tests.
 
-Compatability: PHP7.0 and PHP7.1(Partial, buggy)
-------------------------------------------------
+Compatability: PHP7.0 and PHP7.1(Partial)
+-----------------------------------------
 
 See [runkit-api.php](./runkit-api.php) for the implemented functionality and method signatures.
 
@@ -25,8 +25,10 @@ Superglobals work reliably when tested on web servers and tests.
 Class and function manipulation is recommended only for unit tests.
 
 - `runkit-superglobal` works reliably in 7.0.x and 7.1.x. Superglobals will be unavailable during request shutdown, e.g. when the session is being saved, when other extensions are shutting down.
-- Manipulating user-defined (i.e. not builtin or part of extensions) functions and methods via `runkit_method_*` and `runkit_function_*` generally works, **but is recommended only in unit tests**
-- Manipulating built in functions may cause segmentation faults.
+- Manipulating user-defined (i.e. not builtin or part of extensions) functions and methods via `runkit_method_*` and `runkit_function_*` generally works, **but is recommended only in unit tests** (unlikely to crash, but will cause memory leaks)
+- Manipulating built in functions may cause segmentation faults in rare cases.
+  File a bug report if you see this.
+  **this is recommended only in unit tests, because of the possibility of crashes**.
   (Manipulating built in class methods is impossible/not supported)
 - Adding default properties to classes doesn't work in php7, because of a change
   in the way PHP stores objects.
@@ -42,7 +44,6 @@ Class and function manipulation is recommended only for unit tests.
   PHP7.0+ inlines constants within the same file if they are guaranteed to have only one definition.
   Patching php-src and/or opcache to not inline constants (e.g. based on a php.ini setting) is possible, but hasn't been tried yet.
 - Sandboxing (and `runkit_lint`) were removed.
-- TODO: Fix segmentation faults in PHP 7.1 internal function manipulation.
 - `runkit_object_id` works.
 
 The following contributions are welcome:
@@ -56,6 +57,14 @@ The following contributions are welcome:
 Most of the runkit tests for method manipulation and function manipulation are passing.
 Other methods and corresponding tests are disabled/skipped because changes to php internals in php7 made them impractical.
 
+Examples
+--------
+
+The following mocking libraries work with the runkit7 fork
+
+- [timecop-PHP (Fork)](https://github.com/runkit7/Timecop-PHP) (requires `runkit.internal_override=1`, suggested only for unit tests)
+- [staticmock (Fork)](https://github.com/runkit7/staticmock)
+
 ## PHP7 SPECIFIC DETAILS
 
 ### Bugs in PHP7 runkit
@@ -64,14 +73,12 @@ Other methods and corresponding tests are disabled/skipped because changes to ph
 	(a.k.a. "runkit.internal_override=1")
 	(when you rename/redefine/(copy?) internal functions, and call internal functions with user functions' implementation, or vice versa)
 	(and when functions redefinitions aren't cleaned up)
-	Working on it.
+	Many of these have been fixed.
 -	There are reference counting bugs causing memory leaks.
 	2 calls to `emalloc` have been temporarily replaced with calls to `pemalloc`
 	so that I could execute tests.
 -	There may be a few remaining logic errors after migrating the code to PHP7.
--	The zend VM bytecode may change in 7.0 and 7.1, so some opcodes may not work with each new minor php version release.
--	I still need to fix bugs in the way runkit's extension shutdown is done.
-	Importantly, runkit still needs to be cleaned up first (i.e. before every other extension) (To do this, I need to implement the PHP7 version of `php_runkit_hash_move_to_front`)
+-	The zend VM bytecode may change in 7.2, so some opcodes may not work with each new minor php version release.
 
 ### APIs for PHP7
 #### Implemented APIs for PHP7 (buggy internal function manipulation):
@@ -87,13 +94,15 @@ Other methods and corresponding tests are disabled/skipped because changes to ph
 
 -	`runkit_import`
 	Disabled because of bugs related to properties
+	See https://github.com/runkit7/runkit7/issues/73
 -	`runkit_class_adopt` and `runkit_class_emancipate`
-	Disabled because of bugs related to properties
+	Disabled because of [bugs related to properties](./PROPERTY_MANIPULATION.md).
 -	`runkit_lint*`
 -	`runkit_constant_*` : `runkit_constant_add` works reliably, other methods don't.
 	This works better when the constants are declared in a different file.
 -	`runkit_default_property_*`
-	Disabled because of bugs related to properties
+	Disabled because of [bugs related to properties](./PROPERTY_MANIPULATION.md)
+	See https://github.com/runkit7/runkit7/issues/30
 
 	`runkit_default_property_add` has been removed in php7 - it requires `realloc`ing a different zval to add a property to the property table
 	That would break a lot of things.
@@ -105,6 +114,8 @@ Other methods and corresponding tests are disabled/skipped because changes to ph
 See [PROPERTY\_MANIPULATION.md](./PROPERTY_MANIPULATION.md)
 
 ### FURTHER WORK
+
+See https://github.com/runkit7/runkit7/issues
 
 Things to do in the near future:
 
@@ -174,7 +185,7 @@ As a replacement for `runkit_lint`/`runkit_lint_file` try any of the following:
 - [`opcache_compile_file`](https://secure.php.net/manual/en/function.opcache-compile-file.php) may help, but will not show you any notices.
 - Projects such as [PHP-Parser (Pure PHP)](https://github.com/nikic/PHP-Parser) and [php-ast (C module)](https://github.com/nikic/php-ast, which produce an Abstract Syntax Tree from php code.
   php-ast (PHP module) has a function is much faster and more accurate.
-  (Unfortunately, I think it parses but does not detect erroneous code, e.g. duplicate classes).
+  (Unfortunately, it parses but does not detect erroneous code, e.g. duplicate classes/methods in the same file).
 
   ```php
   // Example replacement for runkit_lint.
