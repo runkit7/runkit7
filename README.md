@@ -126,7 +126,6 @@ Things to do in the near future:
 Things to do after that:
 
 -   Replace property manipulation with `runkit_default_property_modify` (https://github.com/runkit7/runkit7/issues/30)
--   Support and test php 7.1 constant visibility (https://github.com/runkit7/runkit7/issues/60)
 -	Fix FPM
 
 UPSTREAM DOCUMENTATION
