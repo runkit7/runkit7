@@ -211,6 +211,7 @@ Define customized superglobal variables for general purpose use.
     <file name="runkit_methods_returning_by_reference.phpt" role="test" />
     <file name="runkit_method_variadic.phpt" role="test" />
     <file name="runkit_method_variadic_typed.phpt" role="test" />
+    <file name="runkit_object_id.phpt" role="test" />
     <file name="runkit_redefine_old_style_ctor.phpt" role="test" />
     <file name="runkit_remove_magic_call_method.phpt" role="test" />
     <file name="runkit_remove_magic_callstatic_method.phpt" role="test" />
