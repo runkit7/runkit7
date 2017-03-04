@@ -67,6 +67,7 @@ Define customized superglobal variables for general purpose use.
     <file name="runkit_constant_add_array.phpt" role="test" />
     <file name="runkit_constant_add_array_to_class.phpt" role="test" />
     <file name="runkit_constant_add.phpt" role="test" />
+    <file name="runkit_constant_add_protected.phpt" role="test" />
     <file name="runkit_constant_add_to_class.phpt" role="test" />
     <file name="runkit_constant_redefine_in_class.phpt" role="test" />
     <file name="runkit_constant_redefine.phpt" role="test" />

@@ -16,6 +16,16 @@ class TestClass extends TestBaseClass{
 	}
 }
 
+
+function access_protected_constant() {
+	try {
+		$x = TestClass::_FOO;
+		printf("Fetched constant, value=%s\n", var_export($x, true));
+	} catch (Error $e) {
+		printf("Caught %s: %s\n", get_class($e), $e->getMessage());
+	}
+}
+access_protected_constant();
 $const = 'TestBaseClass::_FOO';
 var_dump($const, TestClass::get_foo());
 runkit_constant_redefine($const, 'roh');
@@ -27,9 +37,15 @@ runkit_constant_redefine($const, ['dah']);
 var_dump($const, TestClass::get_foo());
 runkit_constant_redefine($const, 2);
 var_dump($const, TestClass::get_foo());
+access_protected_constant();
+// Redefine it as public, and the access should then work.
+runkit_constant_redefine($const, "bar", RUNKIT_ACC_PUBLIC);
+var_dump($const, TestClass::get_foo());
+access_protected_constant();
 // TODO test subclass
 ?>
 --EXPECT--
+Caught Error: Cannot access protected const TestClass::_FOO
 string(19) "TestBaseClass::_FOO"
 string(3) "foo"
 string(19) "TestBaseClass::_FOO"
@@ -43,3 +59,7 @@ array(1) {
 }
 string(19) "TestBaseClass::_FOO"
 int(2)
+Caught Error: Cannot access protected const TestClass::_FOO
+string(19) "TestBaseClass::_FOO"
+string(3) "bar"
+Fetched constant, value='bar'

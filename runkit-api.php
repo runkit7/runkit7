@@ -22,9 +22,10 @@ const RUNKIT_VERSION              = "1.0.5a2";
  *
  * @param string $constname Name of constant to declare. Either a string to indicate a global constant, or classname::constname to indicate a class constant.
  * @param mixed $value null, Bool, Long, Double, String, Resource, or Array value to store in the new constant.
+ * @param int $visibility - Visibility of the constant. Public by default.
  * @return bool - TRUE on success or FALSE on failure.
  */
-function runkit_constant_add(string $constname, $value) : bool {
+function runkit_constant_add(string $constname, $value, int $visibility = RUNKIT_ACC_PUBLIC) : bool {
 }
 
 /**
@@ -35,9 +36,10 @@ function runkit_constant_add(string $constname, $value) : bool {
  *
  * @param string $constname Name of constant to declare. Either a string to indicate a global constant, or classname::constname to indicate a class constant.
  * @param mixed $value null, Bool, Long, Double, String, Resource, or Array value to store in the new constant.
+ * @param int|null $newVisibility The new visibility of the constant. Unchanged by default.
  * @return bool - TRUE on success or FALSE on failure.
  */
-function runkit_constant_redefine(string $constname, $value) : bool {
+function runkit_constant_redefine(string $constname, $value, int $newVisibility = null) : bool {
 }
 
 /**
@@ -50,7 +52,7 @@ function runkit_constant_redefine(string $constname, $value) : bool {
  * @param mixed $value null, Bool, Long, Double, String, or Resource value to store in the new constant.
  * @return bool - TRUE on success or FALSE on failure.
  */
-function runkit_constant_redefine(string $constname, $value) : bool {
+function runkit_constant_remove(string $constname, $value) : bool {
 }
 
 /**
