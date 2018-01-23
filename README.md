@@ -192,7 +192,7 @@ As a replacement for `runkit_lint`/`runkit_lint_file` try any of the following:
 
 - `php -l --no-php-ini $filename` will quickly check if a file is syntactically valid, but will not show you any php notices about deprecated code, etc.
 - [`opcache_compile_file`](https://secure.php.net/manual/en/function.opcache-compile-file.php) may help, but will not show you any notices.
-- Projects such as [PHP-Parser (Pure PHP)](https://github.com/nikic/PHP-Parser) and [php-ast (C module)](https://github.com/nikic/php-ast, which produce an Abstract Syntax Tree from php code.
+- Projects such as [PHP-Parser (Pure PHP)](https://github.com/nikic/PHP-Parser) and [php-ast (C module)](https://github.com/nikic/php-ast), which produce an Abstract Syntax Tree from php code.
   php-ast (PHP module) has a function is much faster and more accurate.
   (Unfortunately, it parses but does not detect erroneous code, e.g. duplicate classes/methods in the same file).
 
