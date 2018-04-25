@@ -1,0 +1,69 @@
+# Based on igbinary's appveyor config.
+# This tests against the latest stable minor version of PHP 7 (Currently 7.1)
+# Author: Tyson Andre
+
+version: '{branch}.{build}'
+
+# TODO: Add options for testing. See https://github.com/nikic/php-ast/blob/master/.appveyor.yml for an example
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      PHP_EXT_VERSION: '7.1'
+      VC_VERSION: 14
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PHP_EXT_VERSION: '7.2'
+      VC_VERSION: 15
+
+init:
+    - SET PATH=c:\projects\php;C:\projects\composer;%PATH%
+
+branches:
+  only:
+    - master
+
+install:
+- cmd: choco feature enable -n=allowGlobalConfirmation
+- cmd: mkdir %APPVEYOR_BUILD_FOLDER%\bin
+
+build_script:
+- cmd: >-
+    SET BINARY_TOOLS_BASENAME=php-sdk-binary-tools-20110915.zip
+
+    curl -fsS http://windows.php.net/downloads/php-sdk/%BINARY_TOOLS_BASENAME% -o %BINARY_TOOLS_BASENAME%
+
+    7z x -y %BINARY_TOOLS_BASENAME% -oC:\projects\php-sdk
+
+    C:\projects\php-sdk\bin\phpsdk_setvars.bat
+
+    git clone --depth=1 --branch=PHP-%PHP_EXT_VERSION% https://github.com/php/php-src C:\projects\php-src
+
+    mkdir C:\projects\php-src\ext\runkit
+
+    xcopy %APPVEYOR_BUILD_FOLDER% C:\projects\php-src\ext\runkit /s /e /y
+
+    SET DEPS_BASENAME=deps-7.1-vc%VC_VERSION%-x86.7z
+
+    curl -fsS http://windows.php.net/downloads/php-sdk/%DEPS_BASENAME% -o %DEPS_BASENAME%
+
+    7z x -y %DEPS_BASENAME% -oC:\projects\php-src
+
+    cd C:\projects\php-src
+
+    buildconf.bat
+
+    configure.bat --disable-all --enable-session --enable-debug --enable-cli --enable-cgi --enable-runkit --enable-runkit-spl_object_id --enable-json --with-config-file-scan-dir=%APPVEYOR_BUILD_FOLDER%\bin\modules.d --with-prefix=%APPVEYOR_BUILD_FOLDER%\bin --with-php-build=deps
+
+    nmake
+
+
+test_script:
+- cmd: cd C:\projects\php-src
+- cmd: set NO_INTERACTION=1
+- cmd: set REPORT_EXIT_STATUS=1
+- cmd: nmake test TESTS="C:\projects\php-src\ext\runkit\tests --show-diff"
+
+# Would require `nmake install` in the build script.
+#artifacts:
+#  - path: bin
+#    name: master
+#    type: zip
