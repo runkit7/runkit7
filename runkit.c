@@ -303,7 +303,7 @@ ZEND_FUNCTION(_php_runkit_removed_method)
 	php_error_docref(NULL, E_ERROR, "A method removed by runkit was somehow invoked");
 }
 
-static inline void _php_runkit_init_stub_function(const char *name, void (*handler)(INTERNAL_FUNCTION_PARAMETERS), zend_function **result)
+static inline void _php_runkit_init_stub_function(const char *name, ZEND_NAMED_FUNCTION(handler), zend_function **result)
 {
 	*result = pemalloc(sizeof(zend_function), 1);
 	(*result)->common.function_name = zend_string_init(name, strlen(name), 1);  // TODO: Can this be persistent?

@@ -231,7 +231,7 @@ static void php_runkit_set_opcode_constant_relative(const zend_op_array *op_arra
 /* {{{ php_runkit_function_alias_handler
     Used when an internal function is replaced by a user-defined/runkit function. Converts the ICALL to a UCALL.
     Params: zend_execute_data *execute_data, zval *return_value */
-static void php_runkit_function_alias_handler(INTERNAL_FUNCTION_PARAMETERS)
+static ZEND_NAMED_FUNCTION(php_runkit_function_alias_handler)
 {
 	zend_function *fbc_inner;
 	zend_function *fbc = execute_data->func;
